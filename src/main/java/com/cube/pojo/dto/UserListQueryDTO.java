@@ -26,7 +26,7 @@ public class UserListQueryDTO {
 
 	@ApiModelProperty("页号")
 	@Min(value = 1, message = "页号参数有误")
-	@Max(value = 1, message = "页号参数有误")
+	@Max(value = 1000, message = "页号参数有误")
 	private Integer currentPage;
 
 	@ApiModelProperty("用户名模糊查询")

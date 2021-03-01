@@ -15,7 +15,7 @@ import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
  * @date 2021年2月19日
  */
 @Configuration
-@EnableSchedulerLock(defaultLockAtMostFor = "10m")
+@EnableSchedulerLock(defaultLockAtMostFor = "10M")
 public class LockConfig {
 
 	@Bean

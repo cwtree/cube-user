@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
 
 import com.cube.config.MyConfig;
-import com.cube.manager.third.UtilInitManager;
+import com.cube.manager.third.ExternalManager;
 
 import cn.hutool.core.io.IoUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class ReqAdvice implements RequestBodyAdvice {
 	private MyConfig myConfig;
 
 	@Resource
-	private UtilInitManager utilInitManager;
+	private ExternalManager externalManager;
 
 	@Override
 	public boolean supports(MethodParameter methodParameter, Type targetType,
@@ -59,7 +59,7 @@ public class ReqAdvice implements RequestBodyAdvice {
 	private HttpInputMessage decBody(HttpInputMessage inputMessage) throws Exception, IOException {
 		String enc = IoUtil.readUtf8(inputMessage.getBody());
 		log.info("接收密文: {}", enc);
-		String plain = new String(utilInitManager.aesDec(enc));
+		String plain = new String(externalManager.aesDec(enc));
 		log.info("解密明文: {}", plain);
 		InputStream is = IoUtil.toUtf8Stream(plain);
 		return new MyHttpInputMessage(inputMessage.getHeaders(), is);
