@@ -13,25 +13,12 @@ CREATE TABLE `phoenix_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='phoenix用户示例表';
 
 
-DROP TABLE IF EXISTS `info_collection`;
-CREATE TABLE `info_collection` (
+DROP TABLE IF EXISTS `voucher_publish`;
+CREATE TABLE `voucher_publish` (
   `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键',
-  `username` VARCHAR(32) NOT NULL COMMENT '联系人',
-  `organization` VARCHAR(128) NOT NULL COMMENT '单位名称',
-  `province_code` VARCHAR(32) NOT NULL COMMENT '省编码',
-  `province` VARCHAR(128) NOT NULL COMMENT '省',
-  `city` VARCHAR(128) NOT NULL COMMENT '市',
-  `district` VARCHAR(128) NOT NULL COMMENT '区',
-  `address` VARCHAR(128) NOT NULL COMMENT '单位地址',
-  `email` VARCHAR(32) NOT NULL COMMENT '邮箱',
-  `phone_number` VARCHAR(32) NOT NULL COMMENT '手机号码',
-  `comment` VARCHAR(128) NOT NULL COMMENT '备注',
-  `product_type` VARCHAR(32) NOT NULL COMMENT '产品类型waf,ddos',
-  `sync_status` TINYINT NOT NULL DEFAULT -1 COMMENT '是否同步过1同步过，0未同步',
+  `user_d` BIGINT NOT NULL COMMENT '哪个用户发布的代金券信息',
+  `merchant` VARCHAR(32) NOT NULL COMMENT '商家',
+  `voucher_amount` BIGINT NOT NULL COMMENT '商家发布的代金券总金额',
   `create_time` DATETIME DEFAULT NOW() COMMENT '创建时间',
   `update_time` DATETIME DEFAULT NOW() COMMENT '上次更新时间'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='信息收集表';
-
-CREATE UNIQUE INDEX ic_phone_pt_index ON info_collection(phone_number,product_type);
-
-
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商家发布的代金券';

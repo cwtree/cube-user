@@ -45,10 +45,8 @@ public class PhoenixUserMapperTest {
 	 * name字段使用
 	 */
 	private static String SPECIAL = "CUBETEST";
-
-	@Test
-	public void test() {
-		// INSERT
+	
+	private void insert() {
 		List<PhoenixUser> list = CollUtil.newArrayList();
 		log.info("插入 {} 条数据", COUNTER);
 		for (int i = 0; i < COUNTER; i++) {
@@ -59,6 +57,12 @@ public class PhoenixUserMapperTest {
 			// 保存后，id有数据
 			list.add(pu);
 		}
+	}
+
+	@Test
+	public void test() {
+		// INSERT
+		insert();
 		// 分页列表查询
 		Example example = new Example(PhoenixUser.class);
 		Criteria c = example.createCriteria();
@@ -95,6 +99,14 @@ public class PhoenixUserMapperTest {
 		c.andLike("name", "%" + SPECIAL + "%");
 		int temp = phoenixUserMapper.deleteByExample(example);
 		log.info("清空测试数据 {}", temp);
+	}
+	
+	@Test
+	public void testDeleteEntity() {
+		List<PhoenixUser> list = phoenixUserMapper.selectAll();
+		for(PhoenixUser pu:list) {
+			phoenixUserMapper.delete(pu);
+		}
 	}
 
 	@Test
