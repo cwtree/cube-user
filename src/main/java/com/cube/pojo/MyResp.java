@@ -31,7 +31,7 @@ public class MyResp {
 	 * 避免登服务器查日志，该字段前端不用处理，留给后端研发通过接口返回查看
 	 */
 	@ApiModelProperty("错误明细，前端可忽略")
-	private Object innerMsg;
+	private Object errMsg;
 
 	public static MyResp result(Resp resp) {
 		return MyResp.builder().code(resp.getCode()).msg(resp.getMsg()).build();
@@ -41,8 +41,12 @@ public class MyResp {
 		return MyResp.builder().code(resp.getCode()).msg(resp.getMsg()).data(data).build();
 	}
 
-	public static MyResp result(Resp resp, String innerMsg) {
-		return MyResp.builder().code(resp.getCode()).msg(resp.getMsg()).innerMsg(innerMsg).build();
+	public static MyResp result(Resp resp, String errMsg) {
+		return MyResp.builder().code(resp.getCode()).msg(resp.getMsg()).errMsg(errMsg).build();
+	}
+	
+	public static MyResp result(Resp resp, Object data, Object errMsg) {
+		return MyResp.builder().code(resp.getCode()).msg(resp.getMsg()).data(data).errMsg(errMsg).build();
 	}
 
 }

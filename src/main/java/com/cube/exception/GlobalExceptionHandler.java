@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
 		Map<String, Object> map = new HashMap<>(2);
 		map.put("url", request.getRequestURL().toString());
 		map.put("exception", ExceptionUtil.getMessage(e));
-		return MyResp.builder().code(Resp.ERROR.getCode()).msg(Resp.ERROR.getMsg()).innerMsg(map).build();
+		return MyResp.builder().code(Resp.ERROR.getCode()).msg(Resp.ERROR.getMsg()).errMsg(map).build();
 	}
 
 	@ExceptionHandler(Exception.class)
@@ -52,17 +52,17 @@ public class GlobalExceptionHandler {
 		} else if (e instanceof MissingPathVariableException) {
 			errorMsg.append("请检查参数 " + ((MissingPathVariableException) e).getVariableName());
 			return MyResp.builder().code(Resp.PARAM_ERROR.getCode()).msg(Resp.PARAM_ERROR.getMsg())
-					.innerMsg("URL参数有误," + errorMsg).build();
+					.errMsg("URL参数有误," + errorMsg).build();
 		} else if (e instanceof MethodArgumentNotValidException) {
 			errorMsg.append(
 					((MethodArgumentNotValidException) e).getBindingResult().getAllErrors().get(0).getDefaultMessage());
 			return MyResp.builder().code(Resp.PARAM_ERROR.getCode()).msg(Resp.PARAM_ERROR.getMsg())
-					.innerMsg("方法参数有误," + errorMsg).build();
+					.errMsg("方法参数有误," + errorMsg).build();
 		} else {
 			log.error("请求异常", e);
 			errorMsg.append("参数异常").append("#").append(ExceptionUtil.getMessage(e));
 			return MyResp.builder().code(Resp.PARAM_ERROR.getCode()).msg(Resp.PARAM_ERROR.getMsg())
-					.innerMsg(errorMsg.toString()).build();
+					.errMsg(errorMsg.toString()).build();
 		}
 	}
 
