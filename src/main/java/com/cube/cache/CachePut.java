@@ -9,11 +9,12 @@ import java.lang.annotation.Target;
 
 /**
  * 
- * 新增数据，直接设置缓存，目的适合缓存穿透结合使用 减少空缓存影响时间
+ * 新增数据，直接设置缓存，目的适合缓存穿透结合使用 减少空缓存影响时间 取消put缓存，简化逻辑
  * 
  * @author phoenix
  * @date 2020年2月25日
  */
+@Deprecated
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited

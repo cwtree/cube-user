@@ -27,7 +27,7 @@ import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
 /**
- * 
+ * 实际项目里mapper不在单独写单元测试，都在manager的单测里覆盖了mapper的所有方法
  * 
  * @author phoenix
  * @date 2021-2-27
@@ -45,7 +45,7 @@ public class PhoenixUserMapperTest {
 	 * name字段使用
 	 */
 	private static String SPECIAL = "CUBETEST";
-	
+
 	private void insert() {
 		List<PhoenixUser> list = CollUtil.newArrayList();
 		log.info("插入 {} 条数据", COUNTER);
@@ -100,11 +100,11 @@ public class PhoenixUserMapperTest {
 		int temp = phoenixUserMapper.deleteByExample(example);
 		log.info("清空测试数据 {}", temp);
 	}
-	
+
 	@Test
 	public void testDeleteEntity() {
 		List<PhoenixUser> list = phoenixUserMapper.selectAll();
-		for(PhoenixUser pu:list) {
+		for (PhoenixUser pu : list) {
 			phoenixUserMapper.delete(pu);
 		}
 	}

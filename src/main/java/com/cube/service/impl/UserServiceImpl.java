@@ -5,8 +5,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.cube.manager.PhoenixUserManager;
 import com.cube.pojo.Page;
@@ -40,26 +38,11 @@ public class UserServiceImpl implements UserService {
 		return phoenixUserManager.getPuById(id);
 	}
 
-	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public void saveUser(PhoenixUser user) {
 		// TODO Auto-generated method stub
-		// 设置事务回滚保存点
-		Object savePoint = TransactionAspectSupport.currentTransactionStatus().createSavepoint();
-		try {
-			int res = phoenixUserManager.savePu(user);
-			if (res > 0) {
-				log.info("用户保存入库成功 {}", user);
-				// throw new RuntimeException("模拟保存用户抛出异常，事务回滚");
-			}
-		} catch (Exception e) {
-			log.error("保存用户异常", e);
-			// TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();由于manager的save方法有缓存入库操作，所以这里得手动回滚缓存数据
-			log.error("数据库事务回滚后的user信息 {}", user);
-			deleteUser(user);
-			// 回滚到指定点
-			TransactionAspectSupport.currentTransactionStatus().rollbackToSavepoint(savePoint);
-		}
+		log.info("保存用户 {}", user);
+		phoenixUserManager.savePu(user);
 	}
 
 	@Override
@@ -83,7 +66,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserListVO queryUserList(String username, String phone, int currentPage) {
 		// TODO Auto-generated method stub
-		PageInfo<PhoenixUser> pageInfo = phoenixUserManager.queryList(username, phone, currentPage);
+		PageInfo<PhoenixUser> pageInfo = phoenixUserManager.queryFuzzy(username, phone, currentPage);
 		Page page = Page.builder().currentPage(pageInfo.getPageNum()).pageSize(pageInfo.getPageSize())
 				.total(pageInfo.getTotal()).build();
 		List<UserVO> list = CollUtil.newArrayList();

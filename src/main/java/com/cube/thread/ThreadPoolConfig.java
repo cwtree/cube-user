@@ -30,4 +30,13 @@ public class ThreadPoolConfig {
 		return executor;
 	}
 
+	@Bean("smallPool")
+	public Executor smallPool() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setThreadNamePrefix("smallPool-");
+		executor.setMaxPoolSize(4);
+		executor.setCorePoolSize(2);
+		return executor;
+	}
+
 }

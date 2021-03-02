@@ -9,8 +9,6 @@ import org.springframework.stereotype.Component;
 import com.cube.cache.CacheDel;
 import com.cube.cache.CacheGet;
 import com.cube.cache.CacheKey;
-import com.cube.cache.CachePut;
-import com.cube.cache.MyCache;
 import com.cube.manager.PhoenixUserManager;
 import com.cube.mapper.PhoenixUserMapper;
 import com.cube.pojo.doo.PhoenixUser;
@@ -89,13 +87,9 @@ public class PhoenixUserManagerImpl implements PhoenixUserManager {
 	}
 
 	/**
-	 * 注解多个CachePut，说明需要缓存多个key组合
 	 * 
 	 * @see com.cube.manager.PhoenixUserManager#savePu(com.cube.pojo.doo.PhoenixUser)
 	 */
-	@MyCache(put = { @CachePut(save = { @CacheKey(key = "ID", value = "#pu.id") }),
-			@CachePut(save = { @CacheKey(key = "NAME", value = "#pu.name") }),
-			@CachePut(save = { @CacheKey(key = "PHONE", value = "#pu.phoneNumber") }) })
 	@Override
 	public int savePu(PhoenixUser pu) {
 		// TODO Auto-generated method stub
@@ -117,7 +111,7 @@ public class PhoenixUserManagerImpl implements PhoenixUserManager {
 	}
 
 	@Override
-	public PageInfo<PhoenixUser> queryList(String username, String phone, int currentPage) {
+	public PageInfo<PhoenixUser> queryFuzzy(String username, String phone, int currentPage) {
 		// TODO Auto-generated method stub
 		Example example = new Example(PhoenixUser.class);
 		Criteria c = example.createCriteria();

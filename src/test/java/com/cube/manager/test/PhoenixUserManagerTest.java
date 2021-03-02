@@ -1,6 +1,7 @@
 package com.cube.manager.test;
 
-import java.util.List;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import javax.annotation.Resource;
 
@@ -10,15 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cube.manager.PhoenixUserManager;
-import com.cube.pojo.Page;
 import com.cube.pojo.doo.PhoenixUser;
-import com.cube.pojo.vo.UserListVO;
-import com.cube.pojo.vo.UserVO;
 import com.github.pagehelper.PageInfo;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -35,21 +30,38 @@ public class PhoenixUserManagerTest {
 	@Resource
 	private PhoenixUserManager phoenixUserManager;
 
+	private static String TEST = "CUBE-TEST";
+
+	/**
+	 * 测试删除用户
+	 * 
+	 * @Description: TODO(这里用一句话描述这个方法的作用)
+	 */
 	@Test
 	public void test() {
-		PageInfo<PhoenixUser> pageInfo = phoenixUserManager.queryList("", "", -1);
-		log.info("原始pageInfo {}", pageInfo);
-		Page page = Page.builder().currentPage(pageInfo.getPageNum()).pageSize(pageInfo.getPageSize())
-				.total(pageInfo.getTotal()).build();
-		List<UserVO> list = CollUtil.newArrayList();
-		for (PhoenixUser pu : pageInfo.getList()) {
-			UserVO uv = UserVO.builder()
-					.createTime(DateUtil.format(pu.getCreateTime(), DatePattern.NORM_DATETIME_PATTERN))
-					.username(pu.getName()).email(pu.getEmail()).phone(pu.getPhoneNumber()).build();
-			list.add(uv);
-		}
-		UserListVO ulv = UserListVO.builder().list(list).page(page).build();
-		log.info("ULV {}", ulv);
+		log.info("测试保存、删除用户");
+		// 先保存一个用户
+		PhoenixUser pu = PhoenixUser.builder().status(1).email(TEST).password("pwd").salt("salt").phoneNumber(TEST)
+				.name(TEST).build();
+		int res = phoenixUserManager.savePu(pu);
+		assertEquals(res, 1);
+		PhoenixUser idUser = phoenixUserManager.getPuById(pu.getId());
+		assertEquals(TEST, idUser.getName());
+
+		idUser = phoenixUserManager.getPuByName(TEST);
+		assertEquals(TEST, idUser.getName());
+
+		idUser = phoenixUserManager.getPuByPhone(TEST);
+		assertEquals(TEST, idUser.getPhoneNumber());
+
+		PageInfo<PhoenixUser> userList = phoenixUserManager.queryFuzzy(TEST, TEST, -1);
+		assertTrue(userList.getList().size() > 0);
+		userList = phoenixUserManager.queryFuzzy("", TEST, 1);
+		assertTrue(userList.getList().size() > 0);
+		userList = phoenixUserManager.queryFuzzy(TEST, "", 10);
+		assertTrue(userList.getList().size() <= 0);
+		res = phoenixUserManager.deleteUser(pu);
+		assertEquals(res, 1);
 	}
 
 }

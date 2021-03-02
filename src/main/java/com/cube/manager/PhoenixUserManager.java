@@ -65,6 +65,6 @@ public interface PhoenixUserManager {
 	 * @param currentPage <0 不分页，不排序
 	 * @return
 	 */
-	PageInfo<PhoenixUser> queryList(String username, String phone, int currentPage);
+	PageInfo<PhoenixUser> queryFuzzy(String username, String phone, int currentPage);
 
 }

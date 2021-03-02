@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import tk.mybatis.mapper.annotation.KeySql;
+import tk.mybatis.mapper.annotation.Version;
 
 /**
  * 
@@ -54,6 +55,12 @@ public class VoucherPublish implements Serializable {
 	 * 商家剩余代金券金额
 	 */
 	private Long voucherAmount;
+
+	/**
+	 * 版本号，乐观锁
+	 */
+	@Version
+	private Long version;
 
 	/**
 	 * 记录创建时间
