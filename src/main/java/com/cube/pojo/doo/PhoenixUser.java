@@ -43,11 +43,6 @@ public class PhoenixUser implements Serializable {
 	 * 用户名
 	 */
 	private String name;
-	
-	/**
-	 * 用户年龄
-	 */
-	private Integer age;
 
 	/**
 	 * 加密后的密码
