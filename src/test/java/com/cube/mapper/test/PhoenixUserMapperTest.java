@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cube.mapper.PhoenixUserMapper;
 import com.cube.pojo.Page;
+import com.cube.pojo.doo.AgeGroup;
 import com.cube.pojo.doo.PhoenixUser;
 import com.cube.pojo.vo.UserListVO;
 import com.cube.pojo.vo.UserVO;
@@ -22,6 +23,7 @@ import com.github.pagehelper.PageInfo;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.RandomUtil;
 import lombok.extern.slf4j.Slf4j;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
@@ -51,8 +53,9 @@ public class PhoenixUserMapperTest {
 		log.info("插入 {} 条数据", COUNTER);
 		for (int i = 0; i < COUNTER; i++) {
 			PhoenixUser pu = PhoenixUser.builder().name(SPECIAL + "chiwei" + i).createTime(DateUtil.date())
-					.email("mail" + i).phoneNumber("phone" + i).password("pwd" + i).salt("salt" + i).status(1).build();
-			int temp = phoenixUserMapper.insert(pu);
+					.email("mail" + i).age(RandomUtil.randomInt(10, 20)).phoneNumber("phone" + i).password("pwd" + i)
+					.salt("salt" + i).status(1).build();
+			int temp = phoenixUserMapper.insertSelective(pu);
 			assertEquals(temp, 1);
 			// 保存后，id有数据
 			list.add(pu);
@@ -141,6 +144,20 @@ public class PhoenixUserMapperTest {
 		}
 		UserListVO ulv = UserListVO.builder().list(list).page(page).build();
 		log.info("ULV {}", ulv);
+	}
+
+	@Test
+	public void testQuery2() {
+		Example example = new Example(PhoenixUser.class);
+		Criteria c = example.createCriteria();
+		c.andLike("name", "%chiwei%");
+		// select语句去除某些查询字段，减少网络消耗
+		example.excludeProperties("salt", "password");
+		List<PhoenixUser> list = phoenixUserMapper.selectByExample(example);
+		log.info("LIST {}", list);
+		//复杂场景，需要自定义sql
+		List<AgeGroup> agList = phoenixUserMapper.selectAgeGroup();
+		log.info("GROUP {}",agList);
 	}
 
 }
