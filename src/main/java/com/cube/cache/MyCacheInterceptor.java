@@ -55,7 +55,7 @@ public class MyCacheInterceptor {
 	 */
 	public static final String CACHE_NULL = "NULL";
 
-	@Resource(name = "redis")
+	@Resource(name = "dalRedis")
 	private RedisTemplate<String, Object> redis;
 
 	/**

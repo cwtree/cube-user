@@ -27,7 +27,7 @@ public class SessionCache {
 
 	private static final String SESSION_USERNAME_PREFIX = "session#username#";
 
-	@Resource
+	@Resource(name = "systemRedis")
 	private RedisTemplate<String, Object> redis;
 
 	@Resource

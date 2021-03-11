@@ -8,16 +8,22 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- * 
+ * 这个redis配置仅仅用于manager层，其它层不要引用这个redis
  * 
  * @author phoenix
- * @date 2021年2月10日
+ * @date 2021年3月8日
  */
 @Configuration
-public class RedisConfig {
+public class ManagerRedisConfig {
 
-	@Bean("systemRedis")
-	public RedisTemplate<String, Object> systemRedis(RedisConnectionFactory factory) {
+	/**
+	 * 这个redis配置仅仅用于manager层，其它层不要引用这个redis
+	 * @Description: TODO(这里用一句话描述这个方法的作用)
+	 * @param factory
+	 * @return
+	 */
+	@Bean("dalRedis")
+	public RedisTemplate<String, Object> dalRedis(RedisConnectionFactory factory) {
 		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 		redisTemplate.setConnectionFactory(factory);
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
@@ -25,5 +31,5 @@ public class RedisConfig {
 		redisTemplate.afterPropertiesSet();
 		return redisTemplate;
 	}
-
+	
 }
