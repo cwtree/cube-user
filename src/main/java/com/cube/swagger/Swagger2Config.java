@@ -16,6 +16,7 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * 
@@ -24,6 +25,7 @@ import springfox.documentation.spring.web.plugins.Docket;
  * @date 2020年2月10日
  */
 @Configuration
+@EnableSwagger2
 public class Swagger2Config {
 
 	@Resource
@@ -40,8 +42,8 @@ public class Swagger2Config {
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfo("cube-boot示例工程", "API信息", "API V1.0", "xxx",
-				new Contact("中国移动杭州研发中心", "CMCC", "XXXX@cmhi.chinamobile.com"), "CMCC.HY", "", Collections.emptyList());
+		return new ApiInfo("cube系列示例工程", "API信息", "API V1.0", "xxx",
+				new Contact("CUBE", "CUBE", "chiweitree2008@126.com"), "CUBE.HZ", "", Collections.emptyList());
 	}
 
 }
